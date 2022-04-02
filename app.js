@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const LanguageRouter = require('./routers/language-router');
+const UserRouter = require('./routers/user-router');
 const app = express();
 require('dotenv').config();
 
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGOURL).then(() => {
 });
 
 app.use('/api/v1/language/', LanguageRouter);
+app.use('/api/v1/user/', UserRouter);
 
 app.get('/', (req, res) => {
     res.status(200).sendFile('index.html', {root: __dirname + '/public'});
