@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 
 exports.login = (req, res) => {
   try {
-    userModel.find({ email: req.body.email }).then(response => {
+    userModel.find({ email: req.body.email.trim() }).then(response => {
       if (response.length <= 0) {
         return res.send({ message: 'No User Found..!!', data: false });
       }
       else {
-        bcrypt.compare(req.body.password, response[0].password, function (err, result) {
+        bcrypt.compare(req.body.password.trim(), response[0].password, function (err, result) {
           if (err) return err;
           if (result) {
             return res.send({ message: 'Login successful..!!', data: response[0] });
@@ -31,21 +31,21 @@ exports.login = (req, res) => {
 exports.signup = (req, res) => {
   try {
     if (!req.body.externalLogin) {
-      userModel.find({ email: req.body.email }).then(response => {
+      userModel.find({ email: req.body.email.trim() }).then(response => {
         if (response.length > 0) {
           return res.send({ message: 'User already Exists..!!', data: false });
         }
         else {
           const saltRounds = 10;
 
-          bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+          bcrypt.hash(req.body.password.trim(), saltRounds, function (err, hash) {
             // Store hash in your password DB.
             if (err) return err;
             const user = new userModel({
-              fullname: req.body.fullname,
-              email: req.body.email,
+              fullname: req.body.fullname.trim(),
+              email: req.body.email.trim(),
               password: hash,
-              viewPassword: req.body.password,
+              viewPassword: req.body.password.trip(),
             });
 
             user.save().then(data => {
@@ -62,14 +62,14 @@ exports.signup = (req, res) => {
       });
     }
     else {
-      userModel.find({ email: req.body.email }).then(response => {
+      userModel.find({ email: req.body.email.trim() }).then(response => {
         if (response.length > 0) {
           return res.send({ message: 'User already Exists..!!', data: false });
         }
         else {
           const user = new userModel({
-            fullname: req.body.fullname,
-            email: req.body.email,
+            fullname: req.body.fullname.trim(),
+            email: req.body.email.trim(),
             externalLogin: true,
             userVerified: true,
           });
