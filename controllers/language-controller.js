@@ -11,11 +11,13 @@ exports.addLanguage = (req, res) => {
         language.save().then(data => {
             return res.status(200).send({ message: 'Data saved successfully..!!', data });
         }).catch(err => {
-            return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+            console.log(err);
+            return res.send({ message: 'Something went wrong..!!', data: false });
         });
     }
     catch (e) {
-        return console.log(e);
+        console.log(e);
+        return res.send({ message: 'Something went wrong..!!', data: false });
     }
 }
 
@@ -25,10 +27,12 @@ exports.getLanguage = (req, res) => {
             data = data.map(x => x.text);
             return res.status(200).send({ message: 'Data received successfully..!!', data });
         }).catch(err => {
-            return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+            console.log(err);
+            return res.send({ message: 'Something went wrong..!!', data: false });
         });
     }
     catch (e) {
-        return console.log(e);
+        console.log(e);
+        return res.send({ message: 'Something went wrong..!!', data: false });
     }
 }

@@ -5,21 +5,22 @@ exports.login = (req, res) => {
   try {
     userModel.find({ email: req.body.email }).then(response => {
       if (response.length <= 0) {
-        return res.status(400).send({ message: 'No User Found..!!', data: false });
+        return res.send({ message: 'No User Found..!!', data: false });
       }
       else {
         bcrypt.compare(req.body.password, response[0].password, function (err, result) {
           if (err) return err;
           if (result) {
-            return res.status(200).send({ message: 'Login successful..!!', data: response[0] });
+            return res.send({ message: 'Login successful..!!', data: response[0] });
           }
           else {
-            return res.status(400).send({ message: 'Password did not match..!!', data: false });
+            return res.send({ message: 'Password did not match..!!', data: false });
           }
         });
       }
     }).catch(err => {
-      return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+      console.log(err);
+      return res.send({ message: 'Something went wrong..!!', data: false });
     });
   }
   catch (e) {
@@ -32,7 +33,7 @@ exports.signup = (req, res) => {
     if (!req.body.externalLogin) {
       userModel.find({ email: req.body.email }).then(response => {
         if (response.length > 0) {
-          return res.status(400).send({ message: 'User already Exists..!!' });
+          return res.send({ message: 'User already Exists..!!', data: false });
         }
         else {
           const saltRounds = 10;
@@ -50,18 +51,20 @@ exports.signup = (req, res) => {
             user.save().then(data => {
               return res.status(200).send({ message: 'Data saved successfully..!!', data });
             }).catch(err => {
-              return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+              console.log(err);
+              return res.send({ message: 'Something went wrong..!!', data: false });
             });
           });
         }
       }).catch(err => {
-        return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+        console.log(err);
+        return res.send({ message: 'Something went wrong..!!', data: false });
       });
     }
     else {
       userModel.find({ email: req.body.email }).then(response => {
         if (response.length > 0) {
-          return res.status(400).send({ message: 'User already Exists..!!' });
+          return res.send({ message: 'User already Exists..!!', data: false });
         }
         else {
           const user = new userModel({
@@ -74,7 +77,8 @@ exports.signup = (req, res) => {
           user.save().then(data => {
             return res.status(200).send({ message: 'Data saved successfully..!!', data });
           }).catch(err => {
-            return res.status(400).send({ message: 'Something went wrong..!!', data: err });
+            console.log(err);
+            return res.send({ message: 'Something went wrong..!!', data: false });
           });
         }
       })
