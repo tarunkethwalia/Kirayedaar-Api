@@ -45,7 +45,7 @@ exports.signup = (req, res) => {
               fullname: req.body.fullname.trim(),
               email: req.body.email.trim(),
               password: hash,
-              viewPassword: req.body.password.trip(),
+              viewPassword: req.body.password.trim(),
             });
 
             user.save().then(data => {
