@@ -23,12 +23,31 @@ exports.addLanguage = (req, res) => {
 
 exports.getLanguage = (req, res) => {
     try {
-        languageModel.find({type: req.body.type.trim(), screen: req.body.screen.trim()}).then(data => {
-            data = data.map(x => x.text);
-            return res.status(200).send({ message: 'Data received successfully..!!', data });
+
+        let query = [
+            {
+                $match: {
+                    type: req.body.type
+                }
+            }
+        ];
+
+        languageModel.aggregate(query).then(data => {
+            const newArr = {};
+
+            data.map(result => {
+                if (newArr.hasOwnProperty(result.screen)) {
+                    newArr[result.screen].push(result.text);
+                }
+                else {
+                    newArr[result.screen] = [result.text];
+                }
+            });
+
+            return res.status(200).send({ message: 'Data received successfully..!!', data: newArr });
         }).catch(err => {
             console.log(err);
-            return res.send({ message: 'Something went wrong..!!', data: false });
+            return res.send({ message: 'Unable to get data..!!', data: false });
         });
     }
     catch (e) {

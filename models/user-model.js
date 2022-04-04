@@ -10,6 +10,7 @@ const userModel = new Schema({
   profileUrl: {type: String, default: 'default'},
   userVerified: {type: Boolean, default: false},
   status: {type: Boolean, default: true},
+  accountType: {type: String, default: null}, // Tenant or Landlord
   subscriptionType: {type: String, default: 'Free'}, // Free or Paid
 }, {
   timestamps: true,
