@@ -24,7 +24,8 @@ exports.login = (req, res) => {
     });
   }
   catch (e) {
-    return console.log(e);
+    console.log(e);
+    return res.send({ message: 'Server Error..!!', data: false });
   }
 }
 
@@ -85,6 +86,22 @@ exports.signup = (req, res) => {
     }
   }
   catch (e) {
-    return console.log(e);
+    console.log(e);
+    return res.send({ message: 'Server Error..!!', data: false });
+  }
+}
+
+//Need to work on the below function
+exports.updateUser = (req, res) => {
+  try{
+    userModel.updateOne({_id: req.body.id}, {[req.body.key] : req.body.value}).then(data => {
+      return res.status(200).send({ message: 'Data saved successfully..!!', data });
+    }).catch(err => {
+      console.log(err);
+      return res.send({ message: 'Something went wrong..!!', data: false });
+    });
+  }
+  catch (e) {
+    return res.send({ message: 'Server Error..!!', data: false });
   }
 }
