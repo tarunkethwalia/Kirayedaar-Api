@@ -105,3 +105,18 @@ exports.updateUser = async (req, res) => {
     return res.send({ message: 'Server Error..!!', data: false });
   }
 }
+
+exports.getUserData = async (req, res) => {
+  try {
+    const value = await userModel.findOne({[req.body.key] : req.body.value});
+    if(value){
+      return res.status(200).send({ message: 'Data received successfully..!!', data: value });
+    }
+    else {
+      return res.send({ message: 'Something went wrong..!!', data: false });  
+    }
+  }
+  catch(err) {
+    return res.send({ message: 'Server Error..!!', data: false });
+  }
+}
