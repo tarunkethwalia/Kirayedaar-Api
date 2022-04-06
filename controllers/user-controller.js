@@ -91,15 +91,15 @@ exports.signup = (req, res) => {
   }
 }
 
-//Need to work on the below function
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   try{
-    userModel.updateOne({_id: req.body.id}, {[req.body.key] : req.body.value}).then(data => {
-      return res.status(200).send({ message: 'Data saved successfully..!!', data });
-    }).catch(err => {
-      console.log(err);
-      return res.send({ message: 'Something went wrong..!!', data: false });
-    });
+    const value = await userModel.updateOne({_id: req.body.id}, {$set: {[req.body.key] : req.body.value}});
+    if(value.modifiedCount === 1){
+      return res.status(200).send({ message: 'Data saved successfully..!!', data: value });
+    }
+    else {
+      return res.send({ message: 'Something went wrong..!!', data: false });  
+    }
   }
   catch (e) {
     return res.send({ message: 'Server Error..!!', data: false });
