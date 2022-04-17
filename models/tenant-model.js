@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const tenantModel = new Schema({
   userId: {type: String, required: true},
-  accountType: {type: String, required: true}, // Tenant or Landlord
+  tenantId: {type: String, required: true},
+  idNumber: {type: String, required: true},
 }, {
   timestamps: true,
 });
